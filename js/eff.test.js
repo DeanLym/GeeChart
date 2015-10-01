@@ -1,17 +1,18 @@
 // Our Javascript will go here.
 var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
-
-var renderer = new THREE.WebGLRenderer();
+var canvas = document.getElementById("bubble_canvas");
+var renderer = new THREE.WebGLRenderer({ canvas: canvas });
+// var renderer = new THREE.WebGLRenderer();
 renderer.setSize( window.innerWidth, window.innerHeight );
-renderer.setClearColor( 0xffffff );
+renderer.setClearColor( 0x222222 );
 document.body.appendChild( renderer.domElement );
 var box = new THREE.BoxGeometry( 1, 1, 1 );
 var basic_material = new THREE.MeshBasicMaterial( { color: 0xcc8822,wireframe: true } );
 var cube = new THREE.Mesh( box, basic_material );
 
 var line_material = new THREE.LineBasicMaterial({
-  color: 0x000000
+  color: 0xffffff
 });
 var line_material2 = new THREE.LineBasicMaterial({
   color: 0xff8888
@@ -76,6 +77,21 @@ var directionalLight = new THREE.DirectionalLight( 0xffffff, 1 );
 directionalLight.position.set( 0, 0, 10 );
 scene.add( directionalLight );
 
+
+// Try to add text
+// var shapes, geom, mat, mesh;
+//
+// shapes = THREE.FontUtils.generateShapes( "Hello world", {
+//   face: "helvetiker",
+//   // font: "trebuchet ms",
+//   //weight: "bold",
+//   size: 10
+// } );
+// geom = new THREE.ShapeGeometry( shapes );
+// mat = new THREE.MeshBasicMaterial();
+// mesh = new THREE.Mesh( geom, mat );
+// scene.add(mesh);
+//
 camera.position.z = 7;
 function render() {
 tstep ++;
