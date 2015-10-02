@@ -17,7 +17,7 @@ raycaster = new THREE.Raycaster();
 renderer.domElement.addEventListener('mousemove', onMouseMove, false);
 
 var box = new THREE.BoxGeometry( 1, 1, 1 );
-var basic_material = new THREE.MeshBasicMaterial( { color: 0xcc8822,wireframe: true } );
+var basic_material = new THREE.MeshBasicMaterial( { color: 0xffffff,wireframe: false } );
 var cube = new THREE.Mesh( box, basic_material );
 
 var line_material = new THREE.LineBasicMaterial({
@@ -93,20 +93,38 @@ scene.add( directionalLight );
 
 
 // Try to add text
-// var shapes, geom, mat, mesh;
-//
-// shapes = THREE.FontUtils.generateShapes( "Hello world", {
-//   face: "helvetiker",
-//   // font: "trebuchet ms",
-//   //weight: "bold",
-//   size: 10
-// } );
-// geom = new THREE.ShapeGeometry( shapes );
-// mat = new THREE.MeshBasicMaterial();
-// mesh = new THREE.Mesh( geom, mat );
-// scene.add(mesh);
-//
-camera.position.z = 7;
+var xlabel_shapes, xlabel_geom, xlabel;
+
+xlabel_shapes = THREE.FontUtils.generateShapes( "Cumulative Water (STB)", {
+  face: "Helvetiker",
+  // font: "trebuchet ms",
+  //weight: "bold",
+  size: 0.2
+} );
+xlabel_geom = new THREE.ShapeGeometry( xlabel_shapes );
+xlabel = new THREE.Mesh( xlabel_geom, basic_material );
+xlabel.position.x = -1.5;
+xlabel.position.y = -5.3;
+scene.add(xlabel);
+
+var ylabel_shapes, ylabel_geom, ylabel;
+
+ylabel_shapes = THREE.FontUtils.generateShapes( "Cumulative Oil (STB)", {
+  face: "Helvetiker",
+  // font: "trebuchet ms",
+  //weight: "bold",
+  size: 0.2
+} );
+ylabel_geom = new THREE.ShapeGeometry( ylabel_shapes );
+ylabel = new THREE.Mesh( ylabel_geom, basic_material );
+ylabel.rotation.z = 3.1415926/2;
+ylabel.position.x = -5.2;
+ylabel.position.y = -1;
+scene.add(ylabel);
+
+
+
+camera.position.z = 8;
 function render() {
   tstep ++;
   if (tstep < 1000){
