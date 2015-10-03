@@ -1,10 +1,14 @@
 // Our Javascript will go here.
 var selectable_obj = [];
 var scene = new THREE.Scene();
-var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+var camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 1000 );
+camera.position.z = 20;
+
+//var camera = new THREE.OrthographicCamera( -5, 5, 5, -5, 0, 10 );
+
 var canvas = document.getElementById("bubble_canvas");
 var renderer = new THREE.WebGLRenderer({
-  antialia: true,
+  antialias : true,
   canvas: canvas,
   preserveDrawingBuffer: true} );
 // var renderer = new THREE.WebGLRenderer();
@@ -15,6 +19,20 @@ document.body.appendChild( renderer.domElement );
 raycaster = new THREE.Raycaster();
 
 renderer.domElement.addEventListener('mousemove', onMouseMove, false);
+
+//var controls = new THREE.TrackballControls(camera,render.domElement);
+var controls = new THREE.FirstPersonControls(camera);
+controls.movementSpeed = 0.1;
+controls.lookSpeed = 0.05;
+controls.noFly = true;
+controls.lookVertical = false;
+
+//stats
+var stats = new Stats();
+stats.domElement.style.position = 'absolute';
+stats.domElement.style.top = '0px';
+stats.domElement.style.zIndex = 100;
+document.body.appendChild( stats.domElement );
 
 var box = new THREE.BoxGeometry( 1, 1, 1 );
 var basic_material = new THREE.MeshBasicMaterial( { color: 0xcc8822,wireframe: true } );
@@ -72,6 +90,8 @@ for(var i = 0;i<num_circles;i++){
   circles.push(CreateCircle(radius[i],segments));
   circles[i].position.x = -5;
   circles[i].position.y = -5;
+  circles[i].position.z = 0.5*(Math.random()-0.5);
+
   circles[i].name = 'bubble ' + i;
   circles[i].rotationspeed = 0;
   circles[i].radius = radius[i];
@@ -79,6 +99,7 @@ for(var i = 0;i<num_circles;i++){
   selectable_obj.push(circles[i]);
 }
 scene.add(line3);
+
 
 function CreateCircle(radius,segments){
   var circle_material = new THREE.MeshPhongMaterial( { color: 0x00cc22,wireframe: false,transparent: true, opacity: 0.4, side: THREE.DoubleSide } );
@@ -91,6 +112,9 @@ var directionalLight = new THREE.DirectionalLight( 0xffffff, 1 );
 directionalLight.position.set( 0, 0, 10 );
 scene.add( directionalLight );
 
+var directionalLight2 = new THREE.DirectionalLight( 0xffffff, 1 );
+directionalLight2.position.set( 0, 0, -10 );
+scene.add( directionalLight2 );
 
 // Try to add text
 // var shapes, geom, mat, mesh;
@@ -106,8 +130,8 @@ scene.add( directionalLight );
 // mesh = new THREE.Mesh( geom, mat );
 // scene.add(mesh);
 //
-camera.position.z = 7;
 function render() {
+
   tstep ++;
   if (tstep < 1000){
     for(var i = 0;i<num_circles;i++){
@@ -129,6 +153,8 @@ function render() {
 
 
   requestAnimationFrame( render );
+  controls.update();
+  stats.update();
   renderer.render( scene, camera );
 }
 render();
