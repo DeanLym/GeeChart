@@ -18,8 +18,8 @@ function onMouseMove( event )
 
 	// if there is one (or more) intersections
 	if ( intersects.length > 0 ){
-		console.log(intersects.length);
-		console.log("Hit @ " + intersects[0].object.name);
+		//console.log(intersects.length);
+		//console.log("Hit @ " + intersects[0].object.name);
 
     resetbubble(selectable_obj);
 
@@ -34,26 +34,36 @@ function onMouseMove( event )
 }
 
 function highlightbubble(obj){
-  obj.rotationspeed = 0.05;
+  obj.rotationspeed = 0.0;
   obj.material.opacity = 1;
 
   obj.geometry.dispose();
   obj.geometry = new THREE.CircleGeometry( obj.radius*1.5, segments );
+	obj.opacityfreq = 5;
 
+	obj.data_label.visible = true;
+	obj.data_label.position.x = obj.position.x;
+	obj.data_label.position.y = obj.position.y;
+	obj.data_label.position.z = obj.position.z + 0.01;
 
 }
 
 function resetbubble(obj_list){
   obj_list.forEach(function(obj){
-    obj.rotationspeed = 0;
+    obj.rotationspeed = 0.0;
 
     if (obj.material.opacity>0.4){
 
         obj.geometry.dispose();
-
         obj.geometry = new THREE.CircleGeometry( obj.radius, segments );
 
     }
+		obj.opacityfreq = 0;
     obj.material.opacity = 0.4;
+
+		if(!obj.bad) {
+			obj.data_label.visible = false;
+		}
+
   });
 }
