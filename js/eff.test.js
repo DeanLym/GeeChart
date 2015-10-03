@@ -84,7 +84,7 @@ var renderer = new THREE.WebGLRenderer({
     circles[i].position.y = -5;
     circles[i].position.z = 0.5*(Math.random()-0.5);
 
-    circles[i].name = "AD-"+i+"H";
+    circles[i].name = "AD-"+i+"-H";
     circles[i].rotationspeed = 0.0;
     circles[i].opacityfreq = 0;
     circles[i].bad = false;
@@ -179,7 +179,7 @@ var renderer = new THREE.WebGLRenderer({
 
     circles.forEach(function(circle){
 
-      if (time < 6){
+      if (time < 8){
 
         circle.slopes *= circle.decay;
         var flag = circle.position.x<5 & circle.position.y<5;
@@ -192,12 +192,6 @@ var renderer = new THREE.WebGLRenderer({
           circle.data_label.visible = true;
         }
 
-        if(circle.data_label.visible){
-          circle.data_label.position.x = circle.position.x;
-          circle.data_label.position.y = circle.position.y;
-          circle.data_label.position.z = circle.position.z + 0.01;
-        }
-
       } else {
         //circles[i].rotation.x+=circles[i].rotationspeed;
         //circles[i].rotation.y+=circles[i].rotationspeed;
@@ -206,6 +200,13 @@ var renderer = new THREE.WebGLRenderer({
         } else {
           circle.material.opacity = 0.4;
         }
+      }
+
+
+      if(circle.data_label.visible){
+        circle.data_label.position.x = circle.position.x;
+        circle.data_label.position.y = circle.position.y;
+        circle.data_label.position.z = circle.position.z + 0.01;
       }
 
     });

@@ -42,9 +42,6 @@ function highlightbubble(obj){
 	obj.opacityfreq = 5;
 
 	obj.data_label.visible = true;
-	obj.data_label.position.x = obj.position.x;
-	obj.data_label.position.y = obj.position.y;
-	obj.data_label.position.z = obj.position.z + 0.01;
 
 }
 
