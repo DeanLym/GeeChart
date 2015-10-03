@@ -35,7 +35,7 @@ stats.domElement.style.zIndex = 100;
 document.body.appendChild( stats.domElement );
 
 var box = new THREE.BoxGeometry( 1, 1, 1 );
-var basic_material = new THREE.MeshBasicMaterial( { color: 0xcc8822,wireframe: true } );
+var basic_material = new THREE.MeshBasicMaterial( { color: 0xffffff,wireframe: false } );
 var cube = new THREE.Mesh( box, basic_material );
 
 var line_material = new THREE.LineBasicMaterial({
@@ -78,14 +78,14 @@ var radius = [];
 var slopes = [];
 var decay = [];
 var dx = [];
-var num_circles = 200;
+var num_circles = 50;
 var segments = 64;
 var tstep = 0;
 
 for(var i = 0;i<num_circles;i++){
   radius.push(Math.random()*0.2+0.1);
   dx.push(Math.random()*0.01+0.001);
-  slopes.push(Math.random()*2+3);
+  slopes.push(Math.random()*2+8);
   decay.push(Math.random()/100+0.99);
   circles.push(CreateCircle(radius[i],segments));
   circles[i].position.x = -5;
@@ -130,6 +130,48 @@ scene.add( directionalLight2 );
 // mesh = new THREE.Mesh( geom, mat );
 // scene.add(mesh);
 //
+var xlabel_shapes, xlabel_geom, xlabel;
+
+xlabel_shapes = THREE.FontUtils.generateShapes( "Cumulative Water (STB)", {
+  face: "Gentilis",
+  // font: "trebuchet ms",
+  //weight: "bold",
+  size: 0.2
+} );
+xlabel_geom = new THREE.ShapeGeometry( xlabel_shapes );
+xlabel = new THREE.Mesh( xlabel_geom, basic_material );
+xlabel.position.x = -1.5;
+xlabel.position.y = -5.3;
+scene.add(xlabel);
+
+var ylabel_shapes, ylabel_geom, ylabel;
+
+ylabel_shapes = THREE.FontUtils.generateShapes( "Cumulative Oil (STB)", {
+  face: "Gentilis",
+  size: 0.2
+} );
+ylabel_geom = new THREE.ShapeGeometry( ylabel_shapes );
+ylabel = new THREE.Mesh( ylabel_geom, basic_material );
+ylabel.rotation.z = 3.1415926/2;
+ylabel.position.x = -5.2;
+ylabel.position.y = -1;
+scene.add(ylabel);
+
+var data_labels = [], data_label_shape,data_label_geom, data_label;
+for(var i = 0; i<num_circles;i++){
+  data_label_shape = THREE.FontUtils.generateShapes( "AD-"+i+"H", {
+    face: "Gentilis",
+    size: 0.2
+  } );
+  data_label_geom = new THREE.ShapeGeometry( data_label_shape );
+  data_label = new THREE.Mesh( data_label_geom, basic_material );
+  data_label.position.z = 100;
+  data_labels.push(data_label);
+  scene.add(data_labels[i]);
+}
+
+
+
 function render() {
 
   tstep ++;
@@ -142,6 +184,9 @@ function render() {
       circles[i].position.y += flag?dx[i]*slopes[i]:0;
       if(bad){
         circles[i].material.color.setRGB (1, 0, 0);
+        data_labels[i].position.x = circles[i].position.x;
+        data_labels[i].position.y = circles[i].position.y;
+        data_labels[i].position.z = circles[i].position.z + 0.01;
       }
     }
   }else{
