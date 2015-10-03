@@ -20,12 +20,12 @@ raycaster = new THREE.Raycaster();
 
 renderer.domElement.addEventListener('mousemove', onMouseMove, false);
 
-//var controls = new THREE.TrackballControls(camera,render.domElement);
-var controls = new THREE.FirstPersonControls(camera);
-controls.movementSpeed = 0.1;
-controls.lookSpeed = 0.05;
-controls.noFly = true;
-controls.lookVertical = false;
+var controls = new THREE.TrackballControls(camera,render.domElement);
+// var controls = new THREE.FirstPersonControls(camera);
+// controls.movementSpeed = 0.1;
+// controls.lookSpeed = 0.05;
+// controls.noFly = true;
+// controls.lookVertical = false;
 
 //stats
 var stats = new Stats();
@@ -78,7 +78,7 @@ var radius = [];
 var slopes = [];
 var decay = [];
 var dx = [];
-var num_circles = 50;
+var num_circles = 200;
 var segments = 64;
 var tstep = 0;
 
@@ -157,7 +157,7 @@ ylabel.position.x = -5.2;
 ylabel.position.y = -1;
 scene.add(ylabel);
 
-var data_labels = [], data_label_shape,data_label_geom, data_label;
+var data_labels = new THREE.Group(), data_label_shape,data_label_geom, data_label;
 for(var i = 0; i<num_circles;i++){
   data_label_shape = THREE.FontUtils.generateShapes( "AD-"+i+"H", {
     face: "Gentilis",
@@ -165,10 +165,12 @@ for(var i = 0; i<num_circles;i++){
   } );
   data_label_geom = new THREE.ShapeGeometry( data_label_shape );
   data_label = new THREE.Mesh( data_label_geom, basic_material );
-  data_label.position.z = 100;
-  data_labels.push(data_label);
-  scene.add(data_labels[i]);
+  //data_label.position.z = 100;
+  data_label.visible = false;
+  data_labels.add(data_label);
+  //scene.add(data_labels[i]);
 }
+scene.add(data_labels);
 
 
 
@@ -184,9 +186,10 @@ function render() {
       circles[i].position.y += flag?dx[i]*slopes[i]:0;
       if(bad){
         circles[i].material.color.setRGB (1, 0, 0);
-        data_labels[i].position.x = circles[i].position.x;
-        data_labels[i].position.y = circles[i].position.y;
-        data_labels[i].position.z = circles[i].position.z + 0.01;
+        data_labels.children[i].position.x = circles[i].position.x;
+        data_labels.children[i].position.y = circles[i].position.y;
+        data_labels.children[i].position.z = circles[i].position.z + 0.01;
+        data_labels.children[i].visible = true;
       }
     }
   }else{
