@@ -195,13 +195,13 @@ var renderer = new THREE.WebGLRenderer({
       } else {
         //circles[i].rotation.x+=circles[i].rotationspeed;
         //circles[i].rotation.y+=circles[i].rotationspeed;
-        if(circle.opacityfreq!==0){
-          circle.material.opacity = 0.7-0.3*Math.cos(time*circle.opacityfreq);
-        } else {
-          circle.material.opacity = 0.4;
-        }
       }
 
+	  if(circle.opacityfreq!==0){
+          circle.material.opacity = 0.6-0.4*Math.cos(time*circle.opacityfreq);
+       } else {
+          circle.material.opacity = 0.4;
+       }
 
       if(circle.data_label.visible){
         circle.data_label.position.x = circle.position.x;
