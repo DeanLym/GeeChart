@@ -4,13 +4,28 @@
 		<meta charset=utf-8>
 		<title>My first Three.js app</title>
 		<style>
-			body { margin: 0; }
-			canvas { width: 100%; height: 100% }
+			body { margin: 0; };
+			/*canvas { width: 100%; height: 100% };*/
+			.bubble_chart{
+				height: 400px;
+				width: 400px;
+			}
 		</style>
+		<!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+		<!-- Optional theme -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+
+		<!-- Latest compiled and minified JavaScript -->
+		<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 	</head>
 	<body>
-		<canvas id='bubble_canvas'></canvas>
-
+		<div class="row" style="height:400px">
+			<div class="bubble_chart col-lg-6" id = "bubble_chart" style="height:600px"> </div>
+			<div class="area_chart col-lg-6" id = "area_chart" style="height:600px"></div>
+		</div>
 		<script src="lib/three.min.js"></script>
 		<script src="lib/stats.min.js"></script>
 		<script src="lib/TrackballControls.js"></script>
@@ -21,6 +36,6 @@
 		<script src="font/gentilis_regular.typeface.js"></script>
 		<script src="js/event_functions.js"></script>
 		<script src="js/eff.test.js"></script>
-
+		<script src="js/areachart.js"></script>
 	</body>
 </html>

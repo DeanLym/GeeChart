@@ -1,11 +1,11 @@
-function DrawBubbleChart(){
+function DrawAreaChart(){
 
 
 // Our Javascript will go here.
 var selectable_obj = [];
 var clock = new THREE.Clock();
 var scene = new THREE.Scene();
-var container = document.getElementById("bubble_chart");
+var container = document.getElementById("area_chart");
 var camera = new THREE.PerspectiveCamera( 45, container.offsetWidth / container.offsetHeight, 1, 1000 );
 camera.position.z = 15;
 
@@ -79,56 +79,78 @@ var renderer = new THREE.WebGLRenderer({
 
   scene.add(line1);
   scene.add(line2);
-
-  var circles = [];
-  var num_circles = 200;
-  var segments = 64;
-
-  for(var i = 0;i<num_circles;i++){
-    var this_radius = Math.random()*0.2+0.1;
-    circles.push(CreateCircle(this_radius,segments));
-    circles[i].position.x = -5;
-    circles[i].position.y = -5;
-    circles[i].position.z = 0.5*(Math.random()-0.5);
-
-    circles[i].name = "AD-"+i+"-H";
-    circles[i].rotationspeed = 0.0;
-    circles[i].opacityfreq = 0;
-    circles[i].bad = false;
-    circles[i].radius = this_radius;
-
-    circles[i].dx = Math.random()*0.02+0.002;
-    circles[i].slopes = Math.random()*3+7;
-    circles[i].decay = (Math.random()/50+0.98);
-
-
-    scene.add( circles[i] );
-    selectable_obj.push(circles[i]);
-  }
   scene.add(line3);
 
+  //
+  // var circles = [];
+  // var num_circles = 200;
+  // var segments = 64;
+  //
+  // for(var i = 0;i<num_circles;i++){
+  //   var this_radius = Math.random()*0.2+0.1;
+  //   circles.push(CreateCircle(this_radius,segments));
+  //   circles[i].position.x = -5;
+  //   circles[i].position.y = -5;
+  //   circles[i].position.z = 0.5*(Math.random()-0.5);
+  //
+  //   circles[i].name = "AD-"+i+"-H";
+  //   circles[i].rotationspeed = 0.0;
+  //   circles[i].opacityfreq = 0;
+  //   circles[i].bad = false;
+  //   circles[i].radius = this_radius;
+  //
+  //   circles[i].dx = Math.random()*0.02+0.002;
+  //   circles[i].slopes = Math.random()*3+7;
+  //   circles[i].decay = (Math.random()/50+0.98);
+  //
+  //
+  //   scene.add( circles[i] );
+  //   selectable_obj.push(circles[i]);
+  // }
 
-  circles.forEach(function(circle){
+  //
+  // circles.forEach(function(circle){
+  //
+  //   var data_label_shape = THREE.FontUtils.generateShapes( circle.name, {
+  //     face: "Gentilis",
+  //     size: 0.2
+  //   });
+  //   var data_label_geom = new THREE.ShapeGeometry( data_label_shape );
+  //
+  //   circle.data_label = new THREE.Mesh( data_label_geom, basic_material );
+  //   circle.data_label.visible = false;
+  //   scene.add(circle.data_label);
+  //
+  // });
 
-    var data_label_shape = THREE.FontUtils.generateShapes( circle.name, {
-      face: "Gentilis",
-      size: 0.2
-    });
-    var data_label_geom = new THREE.ShapeGeometry( data_label_shape );
 
-    circle.data_label = new THREE.Mesh( data_label_geom, basic_material );
-    circle.data_label.visible = false;
-    scene.add(circle.data_label);
+  // function CreateCircle(radius,segments){
+  //   var circle_material = new THREE.MeshPhongMaterial( { color: 0x00cc22,wireframe: false,transparent: true, opacity: 0.4, side: THREE.DoubleSide } );
+  //   var circleGeometry = new THREE.CircleGeometry( radius, segments );
+  //   var circle = new THREE.Mesh( circleGeometry, circle_material );
+  //   return circle;
+  // }
+  var num_data = 1500;
 
-  });
+  line_data_x = Array.apply(null, {length: num_data}).map(Number.call, Number);
+  var line_data_y = line_data_x.map(function(d){return Math.sin(d);});
 
+  var rectLength = 1, rectWidth = 0.5;
 
-  function CreateCircle(radius,segments){
-    var circle_material = new THREE.MeshPhongMaterial( { color: 0x00cc22,wireframe: false,transparent: true, opacity: 0.4, side: THREE.DoubleSide } );
-    var circleGeometry = new THREE.CircleGeometry( radius, segments );
-    var circle = new THREE.Mesh( circleGeometry, circle_material );
-    return circle;
-  }
+  var rectShape = new THREE.Shape();
+  rectShape.moveTo( 0,0 );
+  rectShape.lineTo( 0, rectWidth );
+  rectShape.lineTo( rectLength, rectWidth );
+  rectShape.lineTo( rectLength, 0 );
+  rectShape.lineTo( rectLength, -rectWidth );
+  rectShape.lineTo( 2*rectLength, -rectWidth );
+  rectShape.lineTo( 2*rectLength, 0 );
+  rectShape.lineTo( 0, 0 );
+
+  var rectGeom = new THREE.ShapeGeometry( rectShape );
+  var rectMesh = new THREE.Mesh( rectGeom, new THREE.MeshBasicMaterial( { color: 0xff0000 } ) ) ;
+
+  scene.add( rectMesh );
 
   var directionalLight = new THREE.DirectionalLight( 0xffffff, 1 );
   directionalLight.position.set( 0, 0, 10 );
@@ -184,39 +206,39 @@ var renderer = new THREE.WebGLRenderer({
 
     var time = clock.getElapsedTime();
 
-    circles.forEach(function(circle){
+    // circles.forEach(function(circle){
+    //
+    //   if (time < 8){
+    //
+    //     circle.slopes *= circle.decay;
+    //     var flag = circle.position.x<5 & circle.position.y<5;
+    //     circle.bad = circle.position.x > circle.position.y;
+    //     circle.position.x += flag?circle.dx:0;
+    //     circle.position.y += flag?circle.dx*circle.slopes:0;
+    //
+    //     if (circle.bad) {
+    //       circle.material.color.setRGB (1, 0, 0);
+    //       circle.data_label.visible = true;
+    //     }
+    //
+    //   } else {
+    //     //circles[i].rotation.x+=circles[i].rotationspeed;
+    //     //circles[i].rotation.y+=circles[i].rotationspeed;
+    //   }
+    //
+	  // if(circle.opacityfreq!==0){
+    //       circle.material.opacity = 0.6-0.4*Math.cos(time*circle.opacityfreq);
+    //    } else {
+    //       circle.material.opacity = 0.4;
+    //    }
+    //
+    //   if(circle.data_label.visible){
+    //     circle.data_label.position.x = circle.position.x;
+    //     circle.data_label.position.y = circle.position.y;
+    //     circle.data_label.position.z = circle.position.z + 0.01;
+    //   }
 
-      if (time < 10){
-
-        circle.slopes *= circle.decay;
-        var flag = circle.position.x<5 & circle.position.y<5;
-        circle.bad = circle.position.x > circle.position.y;
-        circle.position.x += flag?circle.dx:0;
-        circle.position.y += flag?circle.dx*circle.slopes:0;
-
-        if (circle.bad) {
-          circle.material.color.setRGB (1, 0, 0);
-          circle.data_label.visible = true;
-        }
-
-      } else {
-        //circles[i].rotation.x+=circles[i].rotationspeed;
-        //circles[i].rotation.y+=circles[i].rotationspeed;
-      }
-
-	  if(circle.opacityfreq!==0){
-          circle.material.opacity = 0.6-0.4*Math.cos(time*circle.opacityfreq);
-       } else {
-          circle.material.opacity = 0.4;
-       }
-
-      if(circle.data_label.visible){
-        circle.data_label.position.x = circle.position.x;
-        circle.data_label.position.y = circle.position.y;
-        circle.data_label.position.z = circle.position.z + 0.01;
-      }
-
-    });
+    // });
 
 
     requestAnimationFrame( render );
@@ -250,9 +272,9 @@ var renderer = new THREE.WebGLRenderer({
   		//console.log(intersects.length);
   		//console.log("Hit @ " + intersects[0].object.name);
 
-      resetbubble(selectable_obj);
+      // resetbubble(selectable_obj);
 
-      highlightbubble(intersects[0].object);
+      // highlightbubble(intersects[0].object);
 
   	} else {
 
@@ -261,39 +283,39 @@ var renderer = new THREE.WebGLRenderer({
   	}
 
   }
-
-  function highlightbubble(obj){
-    obj.rotationspeed = 0.0;
-    obj.material.opacity = 1;
-
-    obj.geometry.dispose();
-    obj.geometry = new THREE.CircleGeometry( obj.radius*1.5, segments );
-  	obj.opacityfreq = 5;
-
-  	obj.data_label.visible = true;
-
-  }
-
-  function resetbubble(obj_list){
-    obj_list.forEach(function(obj){
-      obj.rotationspeed = 0.0;
-
-      if (obj.material.opacity>0.4){
-
-          obj.geometry.dispose();
-          obj.geometry = new THREE.CircleGeometry( obj.radius, segments );
-
-      }
-  		obj.opacityfreq = 0;
-      obj.material.opacity = 0.4;
-
-  		if(!obj.bad) {
-  			obj.data_label.visible = false;
-  		}
-
-    });
-  }
+  //
+  // function highlightbubble(obj){
+  //   obj.rotationspeed = 0.0;
+  //   obj.material.opacity = 1;
+  //
+  //   obj.geometry.dispose();
+  //   obj.geometry = new THREE.CircleGeometry( obj.radius*1.5, segments );
+  // 	obj.opacityfreq = 5;
+  //
+  // 	obj.data_label.visible = true;
+  //
+  // }
+  //
+  // function resetbubble(obj_list){
+  //   obj_list.forEach(function(obj){
+  //     obj.rotationspeed = 0.0;
+  //
+  //     if (obj.material.opacity>0.4){
+  //
+  //         obj.geometry.dispose();
+  //         obj.geometry = new THREE.CircleGeometry( obj.radius, segments );
+  //
+  //     }
+  // 		obj.opacityfreq = 0;
+  //     obj.material.opacity = 0.4;
+  //
+  // 		if(!obj.bad) {
+  // 			obj.data_label.visible = false;
+  // 		}
+  //
+  //   });
+  // }
 
 }
 
-DrawBubbleChart();
+DrawAreaChart();
