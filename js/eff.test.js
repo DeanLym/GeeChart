@@ -22,11 +22,6 @@ var renderer = new THREE.WebGLRenderer({
   renderer.domElement.addEventListener('mousemove', onMouseMove, false);
 
   var controls = new THREE.TrackballControls(camera,render.domElement);
-  // var controls = new THREE.FirstPersonControls(camera);
-  // controls.movementSpeed = 0.1;
-  // controls.lookSpeed = 0.05;
-  // controls.noFly = true;
-  // controls.lookVertical = false;
 
   //stats
   var stats = new Stats();
@@ -91,7 +86,7 @@ var renderer = new THREE.WebGLRenderer({
     circles[i].radius = this_radius;
 
     circles[i].dx = Math.random()*0.02+0.002;
-    circles[i].slopes = Math.random()*5+5;
+    circles[i].slopes = Math.random()*7+3;
     circles[i].decay = (Math.random()/50+0.98);
 
 
