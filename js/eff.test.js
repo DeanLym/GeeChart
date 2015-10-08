@@ -91,7 +91,7 @@ var renderer = new THREE.WebGLRenderer({
     circles[i].radius = this_radius;
 
     circles[i].dx = Math.random()*0.02+0.002;
-    circles[i].slopes = Math.random()*3+7;
+    circles[i].slopes = Math.random()*5+5;
     circles[i].decay = (Math.random()/50+0.98);
 
 

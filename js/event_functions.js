@@ -37,8 +37,8 @@ function highlightbubble(obj){
   obj.rotationspeed = 0.0;
   obj.material.opacity = 1;
 
-  obj.geometry.dispose();
-  obj.geometry = new THREE.CircleGeometry( obj.radius*1.5, segments );
+  //obj.geometry.dispose();
+  //obj.geometry = new THREE.CircleGeometry( obj.radius*1.5, segments );
 	obj.opacityfreq = 5;
 
 	obj.data_label.visible = true;
@@ -51,8 +51,8 @@ function resetbubble(obj_list){
 
     if (obj.material.opacity>0.4){
 
-        obj.geometry.dispose();
-        obj.geometry = new THREE.CircleGeometry( obj.radius, segments );
+        //obj.geometry.dispose();
+        //obj.geometry = new THREE.CircleGeometry( obj.radius, segments );
 
     }
 		obj.opacityfreq = 0;
